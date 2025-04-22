@@ -99,7 +99,7 @@ function Main({children}){
   )
 }
 
-function Box({children}){
+function Box({element}){
   
   const [isOpen, setIsOpen] = useState(true);
   return(
@@ -111,7 +111,7 @@ function Box({children}){
         {isOpen ? "–" : "+"}
       </button>
       {isOpen && (
-        children
+        element
       )}
     </div>
   )
@@ -243,14 +243,21 @@ export default function App() {
       </NavBar>
 
       <Main>
-        <Box>
+        <Box element={<MovieList movies={movies} />} />
+        <Box element={
+          <>
+          <WatchedSummary watched={watched} />  
+          <WatchedMovieLists watched={watched} />
+          </>
+        }/>
+        {/* <Box>
           <MovieList movies={movies} />
         </Box>
 
         <Box>
             <WatchedSummary watched={watched} />  
             <WatchedMovieLists watched={watched} />
-        </Box>
+        </Box> */}
       </Main>
     </>
   );
