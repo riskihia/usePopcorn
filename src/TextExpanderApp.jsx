@@ -53,7 +53,9 @@ function TextExpander({
   return (
     <>
       <div className={className}>
-        {expanded ? children.slice(0, collapsedNumWords) : children}
+        {expanded
+          ? children.split(" ").slice(0, collapsedNumWords).join(" ") + "..."
+          : children}
 
         <span style={showMoreStyle} onClick={() => setExpanded(!expanded)}>
           {expandButtonText}
