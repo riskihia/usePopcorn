@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 // import './app.css'
 // import App from './App.jsx'
 import StarRating from "./StarRating";
+import TextExpanderApp from "./TextExpanderApp";
 
 const textStyle = {
   borderColor: "balck",
@@ -23,6 +24,8 @@ function Test() {
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* <App /> */}
+
+    {/* Start Rating */}
     <StarRating
       maxRating={5}
       messages={["Terrible", "bad", "okay", "Good", "Amazing"]}
@@ -31,5 +34,8 @@ createRoot(document.getElementById("root")).render(
     <StarRating size={24} color="pink" />
     <StarRating style={textStyle} defaultRating={0} />
     <Test />
+
+    {/* TestExpander */}
+    <TextExpanderApp />
   </StrictMode>
 );
