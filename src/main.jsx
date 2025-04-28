@@ -1,7 +1,8 @@
 import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
-import "./app.css";
-import App from "./App.jsx";
+// import "./app.css";
+// import App from "./App.jsx";
+import Toram from "./toram/Toram.jsx";
 // import StarRating from "./StarRating";
 // import TextExpanderApp from "./TextExpanderApp";
 
@@ -23,7 +24,9 @@ import App from "./App.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    {/* <App /> */}
+
+    <Toram />
 
     {/* Start Rating */}
     {/* <StarRating
