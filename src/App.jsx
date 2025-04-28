@@ -182,6 +182,14 @@ function WatchedSummary({ watched }) {
   );
 }
 
+function ErrorMessage({ message }) {
+  return (
+    <p className="error">
+      <span>-</span> {message}
+    </p>
+  );
+}
+
 function WatchedMovieLists({ watched }) {
   return (
     <ul className="list">
@@ -224,18 +232,39 @@ const KEY = "994c4f04";
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
-  const [isLoading, setISLoading] = useState(false);
-  const query = "interstellar";
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const query = "intersssdaastellar";
 
   useEffect(function () {
     async function fetchMovie() {
-      setISLoading(true);
-      const res = await fetch(
-        `http://www.omdbapi.com/?apikey=${KEY}&S=${query}`
-      );
-      const data = await res.json();
-      setMovies(data.Search);
-      setISLoading(false);
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+        );
+
+        //error ini tidak akan muncul jika no internet / connection
+        if (!res.ok) {
+          throw new Error("Suatu kesalahan terjadi dengan fetch movies");
+        }
+
+        const data = await res.json();
+
+        if (data.Response === "False") throw new Error("My Movie not found");
+
+        setMovies(data.Search);
+      } catch (err) {
+        console.log(err.message);
+
+        if (err.name === "TypeError") {
+          setError("Gagal mengambil data. Periksa koneksi internetmu.");
+        } else {
+          setError(err.message);
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
     fetchMovie();
   }, []);
@@ -248,7 +277,12 @@ export default function App() {
       </NavBar>
 
       <Main>
-        <Box>{isLoading ? <Loader /> : <MovieList movies={movies} />}</Box>
+        <Box>
+          {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
+          {isLoading && <Loader />}
+          {!isLoading && error && <ErrorMessage message={error} />}
+          {!isLoading && !error && <MovieList movies={movies} />}
+        </Box>
 
         <Box>
           <WatchedSummary watched={watched} />
