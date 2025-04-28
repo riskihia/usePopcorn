@@ -2,6 +2,7 @@ import { StrictMode, useState } from "react";
 import { createRoot } from "react-dom/client";
 // import "./app.css";
 // import App from "./App.jsx";
+import "./style/toram.css";
 import Toram from "./toram/Toram.jsx";
 // import StarRating from "./StarRating";
 // import TextExpanderApp from "./TextExpanderApp";
