@@ -24,7 +24,7 @@ function Header() {
 
         {/* Center - Logo */}
         <div className="flex justify-center">
-          <div className="text-2xl font-bold text-[#FE7743] text-center">
+          <div className="text-4xl font-bold text-[#FE7743] text-center">
             Toram Market
           </div>
         </div>
