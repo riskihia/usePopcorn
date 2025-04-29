@@ -140,9 +140,11 @@ function Overlay({ onClose }) {
 
   return (
     <div>
-      <div className="absolute top-0 bottom-0 right-0 left-0 bg-black opacity-50 "></div>
-
-      <Modal animation={animation} onClose={handleClose} />
+      <div className="fixed inset-0 bg-gray-900/80">
+        <div className="relative h-full">
+          <Modal animation={animation} onClose={handleClose} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -150,7 +152,7 @@ function Overlay({ onClose }) {
 function Modal({ animation, onClose }) {
   return (
     <div
-      className={`absolute bottom-0 left-0 right-0 top-3/6 bg-white rounded-t-2xl p-4 ${animation}`}
+      className={`absolute bottom-0 right-0 left-0 bg-white rounded-t-2xl p-4 ${animation}`}
     >
       <div className="icon-wrapper mb-4">
         <svg
@@ -207,11 +209,11 @@ function useBodyScrollLock(isLocked) {
 export default function Toram() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useBodyScrollLock(isMenuOpen);
+  // useBodyScrollLock(isMenuOpen);
 
   return (
     <>
-      <main className="md:w-8/12 lg:w-1/2 xl:w-1/3 2xl:w-1/4 m-auto bg-[#EFEEEA] relative">
+      <main className=" min-h-screen h-full md:w-8/12 lg:w-1/2 xl:w-1/3 2xl:w-1/4 m-auto bg-[#EFEEEA] relative">
         {/* <Header /> */}
         <Header onMenuClick={() => setIsMenuOpen(true)} />
         <Hero />
