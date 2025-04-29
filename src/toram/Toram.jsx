@@ -1,10 +1,12 @@
-function Header() {
+import { useEffect, useState } from "react";
+
+function Header({ onMenuClick }) {
   return (
-    <header className="bg-white shadow-md px-4 py-2 rounded-b-xl">
+    <header className="bg-white shadow-md px-4 py-2 sticky top-0">
       <div className="max-w-7xl mx-auto grid grid-cols-3 items-center">
         {/* Left - Hamburger Icon */}
         <div className="flex justify-start">
-          <button className="text-gray-700">
+          <button className="text-gray-700" onClick={onMenuClick}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-12 w-12"
@@ -44,12 +46,184 @@ function Header() {
   );
 }
 
+function Hero() {
+  return (
+    <div id="HEADER">
+      <img
+        src="../src/imgs/hero_image.png"
+        alt="hero image"
+        className="w-full"
+      />
+    </div>
+  );
+}
+
+function CallToAction() {
+  return (
+    <div id="CTA">
+      <div className="p-4 flex flex-col gap-2">
+        <h1 className="text-[#FE7743] text-3xl font-bold">
+          What your finding?
+        </h1>
+        <h2 className="text-2xl font-bold">Start with us?</h2>
+        <p className="text-gray-500">
+          Find and buy item for your life and dont get it until you found it
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function Search() {
+  return (
+    <div className="relative">
+      <input
+        className="bg-white outline-[#FE7743] px-4 py-3 w-full rounded-full pr-12"
+        type="text"
+        placeholder="Search..."
+      />
+      <svg
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white text-gray-200 w-10 h-10"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M21 21l-4.35-4.35M17 11a6 6 0 11-12 0 6 6 0 0112 0z"
+        />
+      </svg>
+    </div>
+  );
+}
+
+function Devider() {
+  return (
+    <div id="DEVIDER" className="mx-4">
+      <h3 className="text-xl font-semibold">Category</h3>
+    </div>
+  );
+}
+
+function Product({ source }) {
+  return (
+    <div className="rounded-2xl bg-white w-5/12 flex flex-col">
+      <div className="product-images-wrapper self-center p-4">
+        <img src={source} alt="Product account images" className="w-20 h-20" />
+      </div>
+      <div className="product-description-wrapper rounded-b-2xl text-white bg-[#FE7743]">
+        <div className=" flex flex-col px-4 py-2">
+          <span className="font-bold">Spina</span>
+          <span>Buy Items</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Footer() {
+  return (
+    <div className="bg-white mt-12 p-4">
+      <h5 className="text-xl font-semibold">PT. Toram Market</h5>
+      <span className="text-gray-400">By Riski 2025</span>
+    </div>
+  );
+}
+
+function Overlay({ onMenuClick }) {
+  return (
+    <div>
+      <div className="absolute top-0 bottom-0 right-0 left-0 bg-black opacity-50 "></div>
+
+      <Modal onMenuClick={onMenuClick} />
+    </div>
+  );
+}
+
+function Modal({ onMenuClick }) {
+  return (
+    <div className="absolute bottom-0 left-0 right-0 top-3/6 bg-white rounded-t-2xl p-4 animate-slide-up">
+      <div className="icon-wrapper mb-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-12 w-12 place-self-end"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+          onClick={onMenuClick}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </div>
+      <div className="status mb-8">
+        <div className="flex justify-between items-center">
+          <div className="w-20 h-20 rounded-full overflow-hidden">
+            <img
+              src="https://i.pravatar.cc/300"
+              alt="Avatar"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <h3 className="text-xl font-semibold">Username people</h3>
+
+          <button className="bg-[#FE7743] text-white px-6 py-2 rounded-full">
+            Seller
+          </button>
+        </div>
+      </div>
+      <div className="flex flex-col gap-2 option">
+        <div className="text-xl font-bold">Profile</div>
+        <div className="text-xl font-semibold">Settings</div>
+        <div className="text-xl font-semibold">Logout</div>
+      </div>
+    </div>
+  );
+}
+
+function useBodyScrollLock(isLocked) {
+  useEffect(() => {
+    document.body.style.overflow = isLocked ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isLocked]);
+}
+
 export default function Toram() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleToggleMenu = () => {
+    setIsMenuOpen((prev) => !prev); // toggle buka/tutup
+  };
+
+  useBodyScrollLock(isMenuOpen);
+
   return (
     <>
-      <main className="lg:w-1/3 m-auto">
-        <Header />
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <main className="lg:w-1/3 m-auto bg-[#EFEEEA] relative">
+        {/* <Header /> */}
+        <Header onMenuClick={handleToggleMenu} />
+        <Hero />
+        <CallToAction />
+        <div id="SEARCH" className="my-8 px-4">
+          <Search />
+        </div>
+        <Devider />
+        <div className=" flex  m-4 justify-between">
+          <Product source="../src/imgs/product_account_images.png" />
+          <Product source="../src/imgs/product_item_images.png" />
+        </div>
+        <Footer />
+
+        {isMenuOpen && <Overlay onMenuClick={handleToggleMenu} />}
       </main>
     </>
   );

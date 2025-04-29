@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+@theme {
+  --animate-slide-up: slide-up 0.3s ease-out;
+  --animate-slide-down: slide-down 0.3s ease-in;
+
+  @keyframes slide-up {
+    0% {
+      opacity: 0;
+      transform: translateY(100%); /* Mulai dari bawah */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* Bergerak ke posisi normal */
+    }
+  }
+
+  @keyframes slide-down {
+    0% {
+      opacity: 1;
+      transform: translateY(0); /* Posisi normal */
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(100%); /* Bergerak ke bawah */
+    }
+  }
+}
