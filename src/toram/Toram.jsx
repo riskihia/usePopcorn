@@ -207,7 +207,7 @@ function useBodyScrollLock(isLocked) {
 export default function Toram() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // useBodyScrollLock(isMenuOpen);
+  useBodyScrollLock(isMenuOpen);
 
   return (
     <>
