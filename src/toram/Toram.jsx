@@ -215,7 +215,7 @@ export default function Toram() {
 
   return (
     <>
-      <main className="lg:w-1/3 m-auto bg-[#EFEEEA] relative">
+      <main className="md:w-8/12 lg:w-1/2 xl:w-1/3 2xl:w-1/4 m-auto bg-[#EFEEEA] relative">
         {/* <Header /> */}
         <Header onMenuClick={() => setIsMenuOpen(true)} />
         <Hero />
