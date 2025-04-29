@@ -127,19 +127,19 @@ function Box({ children }) {
 //   )
 // }
 
-function MovieList({ movies }) {
+function MovieList({ movies, onSelectMovie }) {
   return (
-    <ul className="list">
+    <ul className="list list-movies">
       {movies?.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} />
+        <Movie movie={movie} key={movie.imdbID} onSelectMovie={onSelectMovie} />
       ))}
     </ul>
   );
 }
 
-function Movie({ movie }) {
+function Movie({ movie, onSelectMovie }) {
   return (
-    <li key={movie.imdbID}>
+    <li key={movie.imdbID} onClick={() => onSelectMovie(movie.imdbID)}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />
       <h3>{movie.Title}</h3>
       <div>
@@ -149,6 +149,17 @@ function Movie({ movie }) {
         </p>
       </div>
     </li>
+  );
+}
+
+function MovieDetails({ selectedId, onCloseMovie }) {
+  return (
+    <div className="details">
+      <button className="btn-back" onClick={onCloseMovie}>
+        &larr;
+      </button>
+      <div className="details">{selectedId}</div>
+    </div>
   );
 }
 
@@ -234,40 +245,73 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const tempQuery = "interstellar";
+  const [selectedId, setSelectedId] = useState("tt2582846");
 
-  useEffect(function () {
-    async function fetchMovie() {
-      try {
-        setIsLoading(true);
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${tempQuery}`
-        );
+  function handleSelectMovie(id) {
+    setSelectedId((selectedId) => (id === selectedId ? null : id));
+  }
 
-        //error ini tidak akan muncul jika no internet / connection
-        if (!res.ok) {
-          throw new Error("Suatu kesalahan terjadi dengan fetch movies");
+  function handleCloseMovie() {
+    selectedId(null);
+  }
+  // useEffect(function () {
+  //   console.log("A after initial render");
+  // }, []);
+  // useEffect(function () {
+  //   console.log("B after every render");
+  // });
+
+  // console.log("C during render");
+
+  // useEffect(
+  //   function () {
+  //     console.log("D");
+  //   },
+  //   [query]
+  // );
+
+  useEffect(
+    function () {
+      async function fetchMovie() {
+        try {
+          setIsLoading(true);
+          setError("");
+          const res = await fetch(
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          );
+
+          //error ini tidak akan muncul jika no internet / connection
+          if (!res.ok) {
+            throw new Error("Suatu kesalahan terjadi dengan fetch movies");
+          }
+
+          const data = await res.json();
+
+          if (data.Response === "False") throw new Error("My Movie not found");
+
+          setMovies(data.Search);
+        } catch (err) {
+          console.log(err.message);
+
+          if (err.name === "TypeError") {
+            setError("Gagal mengambil data. Periksa koneksi internetmu.");
+          } else {
+            setError(err.message);
+          }
+        } finally {
+          setIsLoading(false);
         }
-
-        const data = await res.json();
-
-        if (data.Response === "False") throw new Error("My Movie not found");
-
-        setMovies(data.Search);
-      } catch (err) {
-        console.log(err.message);
-
-        if (err.name === "TypeError") {
-          setError("Gagal mengambil data. Periksa koneksi internetmu.");
-        } else {
-          setError(err.message);
-        }
-      } finally {
-        setIsLoading(false);
       }
-    }
-    fetchMovie();
-  }, []);
+      if (query.length < 3) {
+        setMovies([]);
+        setError("");
+        return;
+      }
+
+      fetchMovie();
+    },
+    [query]
+  );
 
   return (
     <>
@@ -281,12 +325,23 @@ export default function App() {
           {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
           {isLoading && <Loader />}
           {!isLoading && error && <ErrorMessage message={error} />}
-          {!isLoading && !error && <MovieList movies={movies} />}
+          {!isLoading && !error && (
+            <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
+          )}
         </Box>
 
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedMovieLists watched={watched} />
+          {selectedId ? (
+            <MovieDetails
+              selectedId={selectedId}
+              onCloseMovie={handleCloseMovie}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedMovieLists watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
