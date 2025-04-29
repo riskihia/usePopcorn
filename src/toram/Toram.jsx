@@ -139,11 +139,9 @@ function Overlay({ onClose }) {
   };
 
   return (
-    <div>
-      <div className="fixed inset-0 bg-gray-900/80">
-        <div className="relative h-full">
-          <Modal animation={animation} onClose={handleClose} />
-        </div>
+    <div className="fixed inset-0 flex justify-center">
+      <div className="w-full md:w-8/12 lg:w-1/2 xl:w-1/3 2xl:w-1/4 relative bg-gray-800/50">
+        <Modal animation={animation} onClose={handleClose} />
       </div>
     </div>
   );
@@ -152,7 +150,7 @@ function Overlay({ onClose }) {
 function Modal({ animation, onClose }) {
   return (
     <div
-      className={`absolute bottom-0 right-0 left-0 bg-white rounded-t-2xl p-4 ${animation}`}
+      className={`absolute bottom-0 right-0 left-0 h-5/12 bg-white rounded-t-2xl p-4 ${animation}`}
     >
       <div className="icon-wrapper mb-4">
         <svg
@@ -226,6 +224,8 @@ export default function Toram() {
           <Product source="../imgs/product_account_images.png" />
           <Product source="../imgs/product_item_images.png" />
         </div>
+
+        <div className="h-60 none"></div>
         <Footer />
 
         {isMenuOpen && <Overlay onClose={() => setIsMenuOpen(false)} />}
