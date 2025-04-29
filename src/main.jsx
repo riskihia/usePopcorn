@@ -28,9 +28,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* <App /> */}
 
-    {/* <Toram /> */}
+    <Toram />
 
-    <SimpleModal />
+    {/* <SimpleModal /> */}
 
     {/* Start Rating */}
     {/* <StarRating

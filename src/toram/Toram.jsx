@@ -132,19 +132,30 @@ function Footer() {
   );
 }
 
-function Overlay({ onMenuClick }) {
+function Overlay({ onClose }) {
+  const [animation, setAnimation] = useState("animate-slide-up");
+
+  const handleClose = () => {
+    setAnimation("animate-slide-down"); // mulai animasi keluar
+    setTimeout(() => {
+      onClose(); // tutup setelah animasi selesai
+    }, 300); // 300ms sesuai waktu animasi CSS
+  };
+
   return (
     <div>
       <div className="absolute top-0 bottom-0 right-0 left-0 bg-black opacity-50 "></div>
 
-      <Modal onMenuClick={onMenuClick} />
+      <Modal animation={animation} onClose={handleClose} />
     </div>
   );
 }
 
-function Modal({ onMenuClick }) {
+function Modal({ animation, onClose }) {
   return (
-    <div className="absolute bottom-0 left-0 right-0 top-3/6 bg-white rounded-t-2xl p-4 animate-slide-up">
+    <div
+      className={`absolute bottom-0 left-0 right-0 top-3/6 bg-white rounded-t-2xl p-4 ${animation}`}
+    >
       <div className="icon-wrapper mb-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -153,7 +164,7 @@ function Modal({ onMenuClick }) {
           viewBox="0 0 24 24"
           stroke="currentColor"
           strokeWidth={2}
-          onClick={onMenuClick}
+          onClick={onClose}
         >
           <path
             strokeLinecap="round"
@@ -200,17 +211,13 @@ function useBodyScrollLock(isLocked) {
 export default function Toram() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleToggleMenu = () => {
-    setIsMenuOpen((prev) => !prev); // toggle buka/tutup
-  };
-
   useBodyScrollLock(isMenuOpen);
 
   return (
     <>
       <main className="lg:w-1/3 m-auto bg-[#EFEEEA] relative">
         {/* <Header /> */}
-        <Header onMenuClick={handleToggleMenu} />
+        <Header onMenuClick={() => setIsMenuOpen(true)} />
         <Hero />
         <CallToAction />
         <div id="SEARCH" className="my-8 px-4">
@@ -223,7 +230,7 @@ export default function Toram() {
         </div>
         <Footer />
 
-        {isMenuOpen && <Overlay onMenuClick={handleToggleMenu} />}
+        {isMenuOpen && <Overlay onClose={() => setIsMenuOpen(false)} />}
       </main>
     </>
   );
