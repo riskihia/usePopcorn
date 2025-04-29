@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 // import App from "./App.jsx";
 import "./style/toram.css";
 import Toram from "./toram/Toram.jsx";
+import SimpleModal from "./SimpleModal.jsx";
 // import StarRating from "./StarRating";
 // import TextExpanderApp from "./TextExpanderApp";
 
@@ -27,7 +28,9 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     {/* <App /> */}
 
-    <Toram />
+    {/* <Toram /> */}
+
+    <SimpleModal />
 
     {/* Start Rating */}
     {/* <StarRating
