@@ -49,11 +49,7 @@ function Header({ onMenuClick }) {
 function Hero() {
   return (
     <div id="HEADER">
-      <img
-        src="../src/imgs/hero_image.png"
-        alt="hero image"
-        className="w-full"
-      />
+      <img src="../imgs/hero_image.png" alt="hero image" className="w-full" />
     </div>
   );
 }
@@ -225,8 +221,8 @@ export default function Toram() {
         </div>
         <Devider />
         <div className=" flex  m-4 justify-between">
-          <Product source="../src/imgs/product_account_images.png" />
-          <Product source="../src/imgs/product_item_images.png" />
+          <Product source="../imgs/product_account_images.png" />
+          <Product source="../imgs/product_item_images.png" />
         </div>
         <Footer />
 
