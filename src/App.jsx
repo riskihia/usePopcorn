@@ -211,6 +211,10 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     function () {
       if (!title) return;
       document.title = `movie | ${title}`;
+
+      return function () {
+        document.title = "usePopcorn";
+      };
     },
     [title]
   );
@@ -395,12 +399,15 @@ export default function App() {
 
   useEffect(
     function () {
+      const controller = new AbortController();
+
       async function fetchMovie() {
         try {
           setIsLoading(true);
           setError("");
           const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+            { signal: controller.signal }
           );
 
           //error ini tidak akan muncul jika no internet / connection
@@ -413,12 +420,13 @@ export default function App() {
           if (data.Response === "False") throw new Error("My Movie not found");
 
           setMovies(data.Search);
+          setError("");
         } catch (err) {
           console.log(err.message);
 
           if (err.name === "TypeError") {
             setError("Gagal mengambil data. Periksa koneksi internetmu.");
-          } else {
+          } else if (err.name !== "AbortError") {
             setError(err.message);
           }
         } finally {
@@ -432,6 +440,10 @@ export default function App() {
       }
 
       fetchMovie();
+
+      return function () {
+        controller.abort();
+      };
     },
     [query]
   );
