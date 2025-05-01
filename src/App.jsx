@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMovies } from "./Hooks/useMovies";
 import { useLocalStorageState } from "./Hooks/useLocalStorageState";
-import Navbar from "./components/NavBar";
+import Navbar from "./components/Navbar";
 import Search from "./components/Search";
 import Main from "./components/Main";
 import MovieDetails from "./components/Movie/MovieDetails";
