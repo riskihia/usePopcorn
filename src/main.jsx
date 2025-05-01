@@ -1,6 +1,6 @@
 import { createRoot } from "react-dom/client";
 
-import "../src/style/app.css";
+import "./app.css";
 import App from "./App.jsx";
 import { StrictMode } from "react";
 
