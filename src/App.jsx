@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import StarRating from "./StarRating";
+import { useMovies } from "./useMovies";
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -315,7 +316,11 @@ function WatchedMovieLists({ watched, onDeleteWatched }) {
   return (
     <ul className="list">
       {watched.map((movie) => (
-        <WatchedMovie movie={movie} onDeleteWatched={onDeleteWatched} />
+        <WatchedMovie
+          key={movie.imdbID}
+          movie={movie}
+          onDeleteWatched={onDeleteWatched}
+        />
       ))}
     </ul>
   );
@@ -354,16 +359,16 @@ function WatchedMovie({ movie, onDeleteWatched }) {
 function Loader() {
   return <p className="loader">Loading...</p>;
 }
-
 const KEY = "994c4f04";
-
 export default function App() {
-  const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   // const [watched, setWatched] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  // const [movies, setMovies] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [error, setError] = useState("");
   const [selectedId, setSelectedId] = useState("tt2582846");
+
+  const { movies, isLoading, error } = useMovies(query, handleCloseMovie);
 
   const [watched, setWatched] = useState(function () {
     const storedValue = localStorage.getItem("watched");
@@ -393,57 +398,57 @@ export default function App() {
     setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
   }
 
-  useEffect(
-    function () {
-      const controller = new AbortController();
+  // useEffect(
+  //   function () {
+  //     const controller = new AbortController();
 
-      async function fetchMovie() {
-        try {
-          setIsLoading(true);
-          setError("");
-          const res = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-            { signal: controller.signal }
-          );
+  //     async function fetchMovie() {
+  //       try {
+  //         setIsLoading(true);
+  //         setError("");
+  //         const res = await fetch(
+  //           `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
+  //           { signal: controller.signal }
+  //         );
 
-          //error ini tidak akan muncul jika no internet / connection
-          if (!res.ok) {
-            throw new Error("Suatu kesalahan terjadi dengan fetch movies");
-          }
+  //         //error ini tidak akan muncul jika no internet / connection
+  //         if (!res.ok) {
+  //           throw new Error("Suatu kesalahan terjadi dengan fetch movies");
+  //         }
 
-          const data = await res.json();
+  //         const data = await res.json();
 
-          if (data.Response === "False") throw new Error("My Movie not found");
+  //         if (data.Response === "False") throw new Error("My Movie not found");
 
-          setMovies(data.Search);
-          setError("");
-        } catch (err) {
-          // console.log(err.message);
+  //         setMovies(data.Search);
+  //         setError("");
+  //       } catch (err) {
+  //         // console.log(err.message);
 
-          if (err.name === "TypeError") {
-            setError("Gagal mengambil data. Periksa koneksi internetmu.");
-          } else if (err.name !== "AbortError") {
-            setError(err.message);
-          }
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      if (query.length < 3) {
-        setMovies([]);
-        setError("");
-        return;
-      }
+  //         if (err.name === "TypeError") {
+  //           setError("Gagal mengambil data. Periksa koneksi internetmu.");
+  //         } else if (err.name !== "AbortError") {
+  //           setError(err.message);
+  //         }
+  //       } finally {
+  //         setIsLoading(false);
+  //       }
+  //     }
+  //     if (query.length < 3) {
+  //       setMovies([]);
+  //       setError("");
+  //       return;
+  //     }
 
-      handleCloseMovie();
-      fetchMovie();
+  //     handleCloseMovie();
+  //     fetchMovie();
 
-      return function () {
-        controller.abort();
-      };
-    },
-    [query]
-  );
+  //     return function () {
+  //       controller.abort();
+  //     };
+  //   },
+  //   [query]
+  // );
 
   return (
     <>
