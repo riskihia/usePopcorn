@@ -19,10 +19,6 @@ function NumResults({ movies }) {
   );
 }
 
-function Loader() {
-  return <p className="loader">Loading...</p>;
-}
-
 export default function App() {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState("tt2582846");
