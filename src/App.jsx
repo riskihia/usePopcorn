@@ -10,6 +10,7 @@ import MovieList from "./components/Movie/MovieList";
 import ErrorMessage from "./components/ErrorMessage";
 import WatchedSummary from "./components/Movie/WatchedSummary";
 import WatchedMovieList from "./components/Movie/WatchedMovieList";
+import Loader from "./components/Loader";
 
 function NumResults({ movies }) {
   return (
